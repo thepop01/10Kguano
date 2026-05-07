@@ -1,11 +1,11 @@
-import { InputHandler } from './input.js?v=5';
-import { Player } from './player.js?v=5';
-import { BirdManager, Bird } from './bird.js?v=5';
-import { DropManager } from './drops.js?v=5';
-import { SplashManager } from './splashes.js?v=5';
-import { CollisionManager } from './collision.js?v=5';
-import { DifficultyManager } from './difficulty.js?v=5';
-import { UIManager } from './ui.js?v=5';
+import { InputHandler } from './input.js?v=6';
+import { Player } from './player.js?v=6';
+import { BirdManager, Bird } from './bird.js?v=6';
+import { DropManager } from './drops.js?v=6';
+import { SplashManager } from './splashes.js?v=6';
+import { CollisionManager } from './collision.js?v=6';
+import { DifficultyManager } from './difficulty.js?v=6';
+import { UIManager } from './ui.js?v=6';
 
 const GAME_STATE = {
     MENU: 'menu',

@@ -26,40 +26,26 @@ export class InputHandler {
     }
 
     setupTouchListeners() {
-        const canvas = document.getElementById('game-canvas');
+        // On-screen buttons (mobile)
+        const btnLeft  = document.getElementById('btn-left');
+        const btnRight = document.getElementById('btn-right');
+        const btnJump  = document.getElementById('btn-jump');
 
-        canvas.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            this.handleTouch(e.touches);
-        });
+        if (btnLeft && btnRight && btnJump) {
+            const press = (flag) => (e) => { e.preventDefault(); this[flag] = true;  };
+            const release = (flag) => (e) => { e.preventDefault(); this[flag] = false; };
 
-        canvas.addEventListener('touchmove', (e) => {
-            e.preventDefault();
-            this.handleTouch(e.touches);
-        });
+            btnLeft.addEventListener('touchstart',  press('touchLeft'),  { passive: false });
+            btnLeft.addEventListener('touchend',    release('touchLeft'), { passive: false });
+            btnLeft.addEventListener('touchcancel', release('touchLeft'), { passive: false });
 
-        canvas.addEventListener('touchend', (e) => {
-            e.preventDefault();
-            this.handleTouch(e.touches);
-        });
-    }
+            btnRight.addEventListener('touchstart',  press('touchRight'),  { passive: false });
+            btnRight.addEventListener('touchend',    release('touchRight'), { passive: false });
+            btnRight.addEventListener('touchcancel', release('touchRight'), { passive: false });
 
-    handleTouch(touches) {
-        this.touchLeft = false;
-        this.touchRight = false;
-        this.touchJump = touches.length >= 2;
-
-        const canvas = document.getElementById('game-canvas');
-        const rect = canvas.getBoundingClientRect();
-        const centerX = rect.width / 2;
-
-        for (let touch of touches) {
-            const x = touch.clientX - rect.left;
-            if (x < centerX) {
-                this.touchLeft = true;
-            } else {
-                this.touchRight = true;
-            }
+            btnJump.addEventListener('touchstart',  press('touchJump'),  { passive: false });
+            btnJump.addEventListener('touchend',    release('touchJump'), { passive: false });
+            btnJump.addEventListener('touchcancel', release('touchJump'), { passive: false });
         }
     }
 

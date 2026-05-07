@@ -55,8 +55,10 @@ export class Player {
             }
         }
 
-        if (this.x < 0) { this.x = 0; this.velocityX = 0; }
-        if (this.x + this.width > this.canvasWidth) { this.x = this.canvasWidth - this.width; this.velocityX = 0; }
+        // Allow sprite to go behind edge so the visible body reaches the screen edge
+        const sidePadding = this.width * 0.28;
+        if (this.x < -sidePadding) { this.x = -sidePadding; this.velocityX = 0; }
+        if (this.x + this.width > this.canvasWidth + sidePadding) { this.x = this.canvasWidth + sidePadding - this.width; this.velocityX = 0; }
 
         // Walk animation
         if (this.onGround && (Math.abs(this.velocityX) > 10)) {
