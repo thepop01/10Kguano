@@ -61,7 +61,8 @@ export class Drop {
     }
 
     getPosition() {
-        return { x: this.x, y: this.y };
+        // Match the visual wobble offset used in render
+        return { x: this.x + Math.sin(this.wobble) * 2, y: this.y };
     }
 }
 

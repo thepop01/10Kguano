@@ -134,11 +134,12 @@ export class Player {
     }
 
     getBounds() {
+        // Tight hitbox around the visible character body only
         return {
-            x: this.x + 8,
-            y: this.y + this.height * 0.3,
-            width: this.width - 16,
-            height: this.height * 0.65
+            x: this.x + this.width * 0.28,
+            y: this.y + this.height * 0.18,
+            width: this.width * 0.44,
+            height: this.height * 0.70
         };
     }
 
