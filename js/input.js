@@ -26,27 +26,31 @@ export class InputHandler {
     }
 
     setupTouchListeners() {
-        // On-screen buttons (mobile)
+        // Only show and wire touch buttons on actual touch devices
+        const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+        const controls = document.getElementById('touch-controls');
+        if (!isTouchDevice || !controls) return;
+
+        controls.classList.add('visible');
+
         const btnLeft  = document.getElementById('btn-left');
         const btnRight = document.getElementById('btn-right');
         const btnJump  = document.getElementById('btn-jump');
 
-        if (btnLeft && btnRight && btnJump) {
-            const press = (flag) => (e) => { e.preventDefault(); this[flag] = true;  };
-            const release = (flag) => (e) => { e.preventDefault(); this[flag] = false; };
+        const press   = (flag) => (e) => { e.preventDefault(); this[flag] = true;  };
+        const release = (flag) => (e) => { e.preventDefault(); this[flag] = false; };
 
-            btnLeft.addEventListener('touchstart',  press('touchLeft'),  { passive: false });
-            btnLeft.addEventListener('touchend',    release('touchLeft'), { passive: false });
-            btnLeft.addEventListener('touchcancel', release('touchLeft'), { passive: false });
+        btnLeft.addEventListener('touchstart',  press('touchLeft'),   { passive: false });
+        btnLeft.addEventListener('touchend',    release('touchLeft'), { passive: false });
+        btnLeft.addEventListener('touchcancel', release('touchLeft'), { passive: false });
 
-            btnRight.addEventListener('touchstart',  press('touchRight'),  { passive: false });
-            btnRight.addEventListener('touchend',    release('touchRight'), { passive: false });
-            btnRight.addEventListener('touchcancel', release('touchRight'), { passive: false });
+        btnRight.addEventListener('touchstart',  press('touchRight'),   { passive: false });
+        btnRight.addEventListener('touchend',    release('touchRight'), { passive: false });
+        btnRight.addEventListener('touchcancel', release('touchRight'), { passive: false });
 
-            btnJump.addEventListener('touchstart',  press('touchJump'),  { passive: false });
-            btnJump.addEventListener('touchend',    release('touchJump'), { passive: false });
-            btnJump.addEventListener('touchcancel', release('touchJump'), { passive: false });
-        }
+        btnJump.addEventListener('touchstart',  press('touchJump'),   { passive: false });
+        btnJump.addEventListener('touchend',    release('touchJump'), { passive: false });
+        btnJump.addEventListener('touchcancel', release('touchJump'), { passive: false });
     }
 
     isMovingLeft() {
