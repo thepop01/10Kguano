@@ -1,11 +1,11 @@
-import { InputHandler } from './input.js?v=4';
-import { Player } from './player.js?v=4';
-import { BirdManager, Bird } from './bird.js?v=4';
-import { DropManager } from './drops.js?v=4';
-import { SplashManager } from './splashes.js?v=4';
-import { CollisionManager } from './collision.js?v=4';
-import { DifficultyManager } from './difficulty.js?v=4';
-import { UIManager } from './ui.js?v=4';
+import { InputHandler } from './input.js?v=5';
+import { Player } from './player.js?v=5';
+import { BirdManager, Bird } from './bird.js?v=5';
+import { DropManager } from './drops.js?v=5';
+import { SplashManager } from './splashes.js?v=5';
+import { CollisionManager } from './collision.js?v=5';
+import { DifficultyManager } from './difficulty.js?v=5';
+import { UIManager } from './ui.js?v=5';
 
 const GAME_STATE = {
     MENU: 'menu',
@@ -188,26 +188,25 @@ class Game {
 
         const drops = this.dropManager.getDrops();
 
-        // Check player-drop collisions
         for (let i = 0; i < drops.length; i++) {
             const drop = drops[i];
-            if (CollisionManager.checkPlayerDropCollision(this.player, drop)) {
-                // If drop only hit the leg shield zone — absorb it, no damage
-                if (CollisionManager.checkPlayerLegCollision(this.player, drop)) {
-                    this.dropManager.drops.splice(i, 1);
-                    return;
-                }
 
+            // Check torso hit first — this deals damage
+            if (CollisionManager.checkPlayerTorsoCollision(this.player, drop)) {
                 this.health--;
-                this.player.startShield(2); // 2 second shield after being hit
-                
-                // Remove the drop that hit the player
+                this.player.startShield(2);
                 this.dropManager.drops.splice(i, 1);
-                
+
                 if (this.health <= 0) {
                     this.state = GAME_STATE.GAMEOVER;
                     this.uiManager.showGameOver(this.score);
                 }
+                return;
+            }
+
+            // Leg hit — absorb silently, no damage
+            if (CollisionManager.checkPlayerLegCollision(this.player, drop)) {
+                this.dropManager.drops.splice(i, 1);
                 return;
             }
         }

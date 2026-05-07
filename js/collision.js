@@ -24,6 +24,16 @@ export class CollisionManager {
         });
     }
 
+    static checkPlayerTorsoCollision(player, drop) {
+        const torsoBounds = player.getTorsoBounds();
+        const dropPosition = drop.getPosition();
+        return this.checkRectangleCircle(torsoBounds, {
+            x: dropPosition.x,
+            y: dropPosition.y,
+            radius: drop.radius
+        });
+    }
+
     static checkPlayerLegCollision(player, drop) {
         const legBounds = player.getLegBounds();
         const dropPosition = drop.getPosition();

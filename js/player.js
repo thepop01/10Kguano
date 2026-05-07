@@ -136,22 +136,33 @@ export class Player {
     }
 
     getBounds() {
-        // Tight hitbox around the visible character body only
+        // Full hittable area: torso + legs (used to detect any contact)
         return {
             x: this.x + this.width * 0.28,
             y: this.y + this.height * 0.18,
             width: this.width * 0.44,
-            height: this.height * 0.70
+            height: this.height * 0.72
+        };
+    }
+
+    getTorsoBounds() {
+        // Upper body only (head + torso) — hits here deal damage
+        // Spans from 18% to 62% of sprite height, no overlap with legs
+        return {
+            x: this.x + this.width * 0.28,
+            y: this.y + this.height * 0.18,
+            width: this.width * 0.44,
+            height: this.height * 0.44
         };
     }
 
     getLegBounds() {
-        // Bottom 35% of the player sprite = legs zone
+        // Legs only — from 62% to 90% of sprite height, no overlap with torso
         return {
-            x: this.x + this.width * 0.20,
-            y: this.y + this.height * 0.65,
-            width: this.width * 0.60,
-            height: this.height * 0.35
+            x: this.x + this.width * 0.22,
+            y: this.y + this.height * 0.62,
+            width: this.width * 0.56,
+            height: this.height * 0.28
         };
     }
 
