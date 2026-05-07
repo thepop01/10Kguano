@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10kGuano</title>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="game-canvas"></canvas>
+        <div id="ui-layer">
+            <div id="score-display">Score: 0</div>
+            <div id="health-display">Health: ❤️❤️❤️</div>
+            <div id="message-overlay" class="hidden">
+                <div id="message-text"></div>
+                <div id="message-subtext"></div>
+                <div id="restart-hint">Press R or tap to restart</div>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="js/game.js?v=4"></script>
+</body>
+</html>

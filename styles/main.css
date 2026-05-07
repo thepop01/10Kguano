@@ -1,0 +1,173 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #06060f;
+    font-family: 'Inter', Arial, sans-serif;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ── Phone-shaped game window ─────────────────────── */
+/* 9:16 portrait ratio, capped so it always fits the screen */
+#game-container {
+    position: relative;
+    /* Fixed phone aspect ratio: 9 wide : 16 tall */
+    aspect-ratio: 9 / 16;
+    /* Take as much vertical room as possible, then width follows ratio */
+    height: 100vh;
+    width: calc(100vh * 9 / 16);
+    /* Safety cap: if viewport is very narrow, fill width instead */
+    max-width: 100vw;
+    max-height: calc(100vw * 16 / 9);
+    flex-shrink: 0;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow:
+        0 0 0 2px rgba(0, 212, 255, 0.2),
+        0 0 60px rgba(0, 212, 255, 0.15),
+        0 30px 80px rgba(0, 0, 0, 0.8);
+}
+
+/* Decorative "phone notch" feel – subtle top bar */
+#game-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, rgba(0,212,255,0.6), transparent);
+    z-index: 10;
+    pointer-events: none;
+}
+
+#game-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+#ui-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+/* Score Display */
+#score-display {
+    position: absolute;
+    top: 16px;
+    left: 14px;
+    color: #ffffff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    text-shadow: 0 0 16px rgba(0, 212, 255, 0.8);
+    letter-spacing: 1.5px;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 6px 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+/* Health Display */
+#health-display {
+    position: absolute;
+    top: 16px;
+    right: 14px;
+    color: #ff4757;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    text-shadow: 0 0 16px rgba(255, 71, 87, 0.8);
+    letter-spacing: 1.5px;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 6px 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 71, 87, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+/* Message Overlay */
+#message-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 82%;
+    color: #ffffff;
+    pointer-events: auto;
+    background: rgba(10, 10, 30, 0.88);
+    border: 1px solid rgba(0, 212, 255, 0.4);
+    border-radius: 22px;
+    padding: 40px 28px;
+    backdrop-filter: blur(20px);
+    box-shadow:
+        0 0 50px rgba(0, 212, 255, 0.15),
+        0 0 100px rgba(0, 212, 255, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    animation: overlayFadeIn 0.4s ease-out;
+}
+
+@keyframes overlayFadeIn {
+    from { opacity: 0; transform: translate(-50%, -46%) scale(0.95); }
+    to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+#message-overlay.hidden {
+    display: none;
+}
+
+#message-text {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 30px;
+    font-weight: 900;
+    margin-bottom: 14px;
+    background: linear-gradient(135deg, #00d4ff 0%, #a855f7 50%, #ff4757 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 1.5px;
+    line-height: 1.2;
+}
+
+#message-subtext {
+    font-size: 13px;
+    margin-bottom: 28px;
+    color: rgba(255, 255, 255, 0.72);
+    line-height: 1.7;
+}
+
+#restart-hint {
+    font-size: 13px;
+    color: rgba(0, 212, 255, 0.95);
+    background: rgba(0, 212, 255, 0.1);
+    border: 1px solid rgba(0, 212, 255, 0.4);
+    border-radius: 50px;
+    padding: 10px 24px;
+    display: inline-block;
+    letter-spacing: 0.8px;
+    animation: pulse 2s ease-in-out infinite;
+    font-weight: 600;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.7; transform: scale(0.97); }
+}
