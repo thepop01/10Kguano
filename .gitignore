@@ -1,0 +1,10 @@
+# Editor & IDE
+.vscode/
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
