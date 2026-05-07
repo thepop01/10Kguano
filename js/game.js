@@ -6,6 +6,7 @@ import { SplashManager } from './splashes.js?v=9';
 import { CollisionManager } from './collision.js?v=9';
 import { DifficultyManager } from './difficulty.js?v=9';
 import { UIManager } from './ui.js?v=9';
+import { Leaderboard } from './leaderboard.js?v=1';
 
 const GAME_STATE = {
     MENU: 'menu',
@@ -19,10 +20,14 @@ class Game {
         this.canvas = document.getElementById('game-canvas');
         this.ctx = this.canvas.getContext('2d');
         this.state = GAME_STATE.MENU;
+        this.playerName = "Player"; // Default name
 
         this.setupCanvas();
         this.setupComponents();
         this.setupEventListeners();
+
+        // Fetch leaderboard scores immediately
+        Leaderboard.fetchAndRenderScores();
 
         this.lastTime = 0;
         this.gameLoop = this.gameLoop.bind(this);
@@ -68,21 +73,53 @@ class Game {
     }
 
     setupEventListeners() {
-        const startOrRestart = () => {
-            if (this.state === GAME_STATE.MENU) {
-                this.startGame();
-            } else if (this.state === GAME_STATE.GAMEOVER || this.state === GAME_STATE.WIN) {
+        const landingPage = document.getElementById('landing-page');
+        const gameContainer = document.getElementById('game-container');
+        const startBtn = document.getElementById('start-game-btn');
+        const nameInput = document.getElementById('player-name-input');
+
+        const initiateGame = () => {
+            const enteredName = nameInput.value.trim();
+            if (enteredName) {
+                this.playerName = enteredName;
+            }
+            
+            // Hide landing page, show game
+            landingPage.classList.add('hidden');
+            gameContainer.classList.remove('hidden');
+            
+            // Force a canvas resize now that the container is visible
+            this.resizeCanvas();
+            
+            this.startGame();
+        };
+
+        // Start from landing page
+        startBtn.addEventListener('click', initiateGame);
+        
+        nameInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                initiateGame();
+            }
+        });
+
+        // Restart logic from game over/win screens
+        const restartGame = () => {
+            if (this.state === GAME_STATE.GAMEOVER || this.state === GAME_STATE.WIN) {
+                // If they restart, fetch latest scores for next time they go to the menu
+                Leaderboard.fetchAndRenderScores();
                 this.restart();
             }
         };
 
-        window.addEventListener('click', startOrRestart);
-        window.addEventListener('touchstart', startOrRestart, { passive: false });
+        window.addEventListener('click', restartGame);
+        window.addEventListener('touchstart', restartGame, { passive: false });
 
         window.addEventListener('keydown', (e) => {
-            if (this.state === GAME_STATE.MENU && (e.key === 'Enter' || e.key === ' ')) {
+            if ((this.state === GAME_STATE.GAMEOVER || this.state === GAME_STATE.WIN) && (e.key === 'Enter' || e.key === 'r' || e.key === 'R')) {
                 e.preventDefault();
-                this.startGame();
+                this.restart();
             }
         });
     }
@@ -97,6 +134,13 @@ class Game {
         this.splashManager.clear();
         this.birdManager.clear();
         this.uiManager.reset();
+        
+        // Hide the start screen message if it's there
+        const messageOverlay = document.getElementById('message-overlay');
+        if (messageOverlay) {
+            messageOverlay.classList.add('hidden');
+        }
+
         this.spawnInitialBirds();
     }
 
@@ -200,6 +244,7 @@ class Game {
                 if (this.health <= 0) {
                     this.state = GAME_STATE.GAMEOVER;
                     this.uiManager.showGameOver(this.score);
+                    Leaderboard.submitScore(this.playerName, this.score);
                 }
                 return;
             }
