@@ -26,8 +26,11 @@ export class InputHandler {
     }
 
     setupTouchListeners() {
-        // Only show and wire touch buttons on actual touch devices
-        const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+        // Strict touch detection — Windows reports maxTouchPoints > 0 even on non-touch laptops
+        // Use matchMedia pointer check combined with ontouchstart for reliability
+        const isTouchDevice = ('ontouchstart' in window) &&
+            window.matchMedia('(pointer: coarse)').matches;
+
         const controls = document.getElementById('touch-controls');
         if (!isTouchDevice || !controls) return;
 
