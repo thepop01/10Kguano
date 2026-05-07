@@ -24,6 +24,16 @@ export class CollisionManager {
         });
     }
 
+    static checkPlayerLegCollision(player, drop) {
+        const legBounds = player.getLegBounds();
+        const dropPosition = drop.getPosition();
+        return this.checkRectangleCircle(legBounds, {
+            x: dropPosition.x,
+            y: dropPosition.y,
+            radius: drop.radius
+        });
+    }
+
     static checkPlayerSplashCollision(player, splashManager) {
         const playerBounds = player.getBounds();
         return splashManager.checkPlayerCollision(playerBounds);

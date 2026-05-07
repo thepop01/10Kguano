@@ -192,6 +192,12 @@ class Game {
         for (let i = 0; i < drops.length; i++) {
             const drop = drops[i];
             if (CollisionManager.checkPlayerDropCollision(this.player, drop)) {
+                // If drop only hit the leg shield zone — absorb it, no damage
+                if (CollisionManager.checkPlayerLegCollision(this.player, drop)) {
+                    this.dropManager.drops.splice(i, 1);
+                    return;
+                }
+
                 this.health--;
                 this.player.startShield(2); // 2 second shield after being hit
                 

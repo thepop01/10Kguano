@@ -90,7 +90,7 @@ export class Player {
 
         ctx.save();
 
-        // Shield Effect
+        // ── Full-body Shield Effect (powerup) ──
         if (this.isShielded()) {
             ctx.beginPath();
             ctx.arc(cx, cy, 45, 0, Math.PI * 2);
@@ -106,6 +106,8 @@ export class Player {
             ctx.lineWidth = 2;
             ctx.stroke();
         }
+
+
 
 
 
@@ -140,6 +142,16 @@ export class Player {
             y: this.y + this.height * 0.18,
             width: this.width * 0.44,
             height: this.height * 0.70
+        };
+    }
+
+    getLegBounds() {
+        // Bottom 35% of the player sprite = legs zone
+        return {
+            x: this.x + this.width * 0.20,
+            y: this.y + this.height * 0.65,
+            width: this.width * 0.60,
+            height: this.height * 0.35
         };
     }
 
