@@ -26,34 +26,7 @@ export class InputHandler {
     }
 
     setupTouchListeners() {
-        // Strict touch detection — Windows reports maxTouchPoints > 0 even on non-touch laptops
-        // Use matchMedia pointer check combined with ontouchstart for reliability
-        const isTouchDevice = ('ontouchstart' in window) &&
-            window.matchMedia('(pointer: coarse)').matches;
-
-        const controls = document.getElementById('touch-controls');
-        if (!isTouchDevice || !controls) return;
-
-        controls.classList.add('visible');
-
-        const btnLeft  = document.getElementById('btn-left');
-        const btnRight = document.getElementById('btn-right');
-        const btnJump  = document.getElementById('btn-jump');
-
-        const press   = (flag) => (e) => { e.preventDefault(); this[flag] = true;  };
-        const release = (flag) => (e) => { e.preventDefault(); this[flag] = false; };
-
-        btnLeft.addEventListener('touchstart',  press('touchLeft'),   { passive: false });
-        btnLeft.addEventListener('touchend',    release('touchLeft'), { passive: false });
-        btnLeft.addEventListener('touchcancel', release('touchLeft'), { passive: false });
-
-        btnRight.addEventListener('touchstart',  press('touchRight'),   { passive: false });
-        btnRight.addEventListener('touchend',    release('touchRight'), { passive: false });
-        btnRight.addEventListener('touchcancel', release('touchRight'), { passive: false });
-
-        btnJump.addEventListener('touchstart',  press('touchJump'),   { passive: false });
-        btnJump.addEventListener('touchend',    release('touchJump'), { passive: false });
-        btnJump.addEventListener('touchcancel', release('touchJump'), { passive: false });
+        // Touch controls removed
     }
 
     isMovingLeft() {

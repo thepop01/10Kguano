@@ -172,45 +172,4 @@ html, body {
     50%       { opacity: 0.7; transform: scale(0.97); }
 }
 
-/* ── On-screen touch controls ─────────────────────── */
-#touch-controls {
-    position: absolute;
-    bottom: 24px;
-    right: 16px;
-    display: none;
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
-    pointer-events: none;
-    z-index: 20;
-}
-
-#touch-controls.visible {
-    display: flex;
-}
-
-.touch-btn {
-    pointer-events: auto;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    border: 2px solid rgba(0, 212, 255, 0.6);
-    background: rgba(0, 0, 0, 0.45);
-    color: rgba(0, 212, 255, 0.95);
-    font-size: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    backdrop-filter: blur(6px);
-    box-shadow: 0 0 16px rgba(0, 212, 255, 0.2);
-    transition: background 0.1s, transform 0.1s;
-    -webkit-tap-highlight-color: transparent;
-    user-select: none;
-}
-
-.touch-btn:active,
-.touch-btn.pressed {
-    background: rgba(0, 212, 255, 0.25);
-    transform: scale(0.92);
-}
+/* ── End of styles ─────────────────────── */
