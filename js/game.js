@@ -6,7 +6,7 @@ import { SplashManager } from './splashes.js?v=9';
 import { CollisionManager } from './collision.js?v=9';
 import { DifficultyManager } from './difficulty.js?v=9';
 import { UIManager } from './ui.js?v=9';
-import { Leaderboard } from './leaderboard.js?v=1';
+import { Leaderboard } from './leaderboard.js?v=2';
 
 const GAME_STATE = {
     MENU: 'menu',
