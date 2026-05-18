@@ -1,0 +1,8 @@
+{
+  "name": "10kbingo",
+  "version": "1.0.0",
+  "description": "10kbingo game",
+  "scripts": {
+    "build": "node build.js"
+  }
+}
