@@ -21,3 +21,21 @@ if (!fs.existsSync(path.dirname(configPath))) {
 
 fs.writeFileSync(configPath, content);
 console.log('Successfully generated js/config.js from environment variables.');
+
+// Vercel expects a build output directory. We will copy static files to "public"
+const publicDir = path.join(__dirname, 'public');
+if (!fs.existsSync(publicDir)) {
+  fs.mkdirSync(publicDir);
+}
+
+const itemsToCopy = ['index.html', 'js', 'styles', 'assets'];
+
+itemsToCopy.forEach(item => {
+  const src = path.join(__dirname, item);
+  const dest = path.join(publicDir, item);
+  if (fs.existsSync(src)) {
+    fs.cpSync(src, dest, { recursive: true });
+  }
+});
+
+console.log('Successfully copied files to public directory.');
