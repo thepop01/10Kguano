@@ -1,21 +1,22 @@
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { SUPABASE_URL, SUPABASE_KEY } from './config.js';
-
-// Initialize the Supabase client
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-
 export class Leaderboard {
     static async submitScore(playerName, score) {
         if (!playerName || score <= 0) return; // Don't submit empty names or 0 scores
 
         try {
-            const { error } = await supabase
-                .from('leaderboard')
-                .insert([
-                    { player_name: playerName, score: score }
-                ]);
+            const response = await fetch('/api/submitScore', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ playerName, score })
+            });
 
-            if (error) throw error;
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.error || 'Failed to submit score');
+            }
+
             console.log('Score submitted successfully!');
             
             // Refresh the leaderboard to show the new score
@@ -33,13 +34,14 @@ export class Leaderboard {
         container.innerHTML = '<div class="lb-loading">Loading top squads...</div>';
 
         try {
-            const { data, error } = await supabase
-                .from('leaderboard')
-                .select('player_name, score')
-                .order('score', { ascending: false })
-                .limit(10);
+            const response = await fetch('/api/getScores');
+            const result = await response.json();
 
-            if (error) throw error;
+            if (!response.ok) {
+                throw new Error(result.error || 'Failed to fetch scores');
+            }
+
+            const data = result.data;
 
             if (!data || data.length === 0) {
                 container.innerHTML = '<div class="lb-empty">No scores yet. Be the first!</div>';
